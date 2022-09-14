@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  app:
+    container_name: springboot-postgresql
+    image: springboot-postgresql
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/cars
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgresql
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_ERROR_INCLUDE-MESSAGE=always
+  db:
+    image: postgres
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgresql
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cars
