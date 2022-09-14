@@ -52,7 +52,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Iterable<CarDto> findAll() {
-        return carMapper.carsToCarDtos(carRepository.findAll());
+        Iterable<Car> cars = carRepository.findAll();
+        log.info("Вывод всех машин, найдено:{}", StreamSupport.stream(cars.spliterator(), false).count());
+        return carMapper.carsToCarDtos(cars);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class CarServiceImpl implements CarService {
         if(carRepository.findFirstByOrderByCreatedDateDesc().isPresent()) {
             statistic.put("Last record",  carMapper.carToCarDto(carRepository.findFirstByOrderByCreatedDateDesc().get()));
         }
-
+        log.info("Статистика сформировалась успешно");
         return statistic;
     }
 }
